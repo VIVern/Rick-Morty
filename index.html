@@ -5,21 +5,35 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Canvas</title>
-  <style>
-    body {
-      margin: 0;
-    }
 
-    canvas {
-      border: 1px solid red;
-      background: url('bg2.jpg') no-repeat;
-      background-size: cover;
-    }
-  </style>
+  <link rel="stylesheet" href="css/main.css">
 </head>
 <body>
-  <canvas></canvas>
+  <div class="startMenu">
+    <div class="start">Start Game</div>
+  </div>
+
+  <div class="gameIntarface hide">
+    <div class="continue">Continue</div>
+    <div class="restart">Restart</div>
+    <div class="exit">Exit</div>
+
+  </div>
+
+  <span class="score hide">Score: 0</span>
+  <ul class="lives hide">
+    <li data-live="true" class="hasLive"></li>
+    <li data-live="true" class="hasLive"></li>
+    <li data-live="true" class="hasLive"></li>
+    <li data-live="true" class="hasLive"></li>
+    <li data-live="true" class="hasLive"></li>
+  </ul>
+  <div class="gamefield">
+    <canvas></canvas>
+  </div>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
   <script src="canvas.js"></script>
+
 </body>
 </html>

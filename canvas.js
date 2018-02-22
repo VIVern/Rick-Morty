@@ -97,14 +97,20 @@ var keyboard = {
   up: false,
   right: false,
   left: false,
-  pause: false
+}
+
+var gameState = {
+  pause: false,
+  newLevel : true
 }
 
 var player;
 var shootArray;
 var monsterArray;
+var monstersGo;
 var portal;
-var cut=0;
+var goPortalSpeed=0;
+var apearSpeed = 0;
 
 //------------ Objects in game-----------------------------//
 
@@ -225,7 +231,7 @@ window.addEventListener('keydown', function(event){
   // pause
 
   if(event.keyCode == 27) {
-    keyboard.pause=true;
+    gameState.pause=true;
   }
 
 });
@@ -272,7 +278,7 @@ window.addEventListener('keypress',function(event){
 //----------------------Intarface events ---------------//
 
 $('.continue span').on('click', function(){
-  keyboard.pause =false;
+  gameState.pause =false;
   $('.gameIntarface').toggleClass('hide');
   $('.lives').removeClass('hide');
   $('.score').removeClass('hide');
@@ -286,7 +292,7 @@ $('.restart span').on('click', function(){
   $('.lives').removeClass('hide');
   $('.score').removeClass('hide');
   $('.bar').removeClass('hide');
-  keyboard.pause = false;
+  gameState.pause = false;
   animation();
 });
 
@@ -301,7 +307,7 @@ $('.exit span').on('click', function(){
 
 $('.start span').on('click', function(){
   reset();
-  keyboard.pause = false;
+  gameState.pause = false;
   $('.startMenu').addClass('hide');
   $('.lives').removeClass('hide');
   $('.score').removeClass('hide');
@@ -327,6 +333,10 @@ function reset(){
   player = new Player(300,300,2,2,5,0,0);
   shootArray =[];
   monsterArray = [];
+  goPortalSpeed = 0;
+  apearSpeed = 0;
+  clearInterval(monstersGo);
+  gameState.newLevel = true;
   ctxBar.clearRect(0,0,bar.width,bar.height);
   fullLive();
   updateScore();
@@ -356,8 +366,12 @@ function plusScore(value){
 }
 
 function plusBarProgress(value){
-  player.barProgress+=value;
-  updateBar(player.barProgress);
+  if(player.barProgress < 200) {
+    player.barProgress+=value;
+    updateBar(player.barProgress);
+  } else {
+    return;
+  }
 }
 
 function fullBar(){
@@ -379,24 +393,40 @@ function updateBar(updateValue){
 }
 
 function nextLevel(c){
-  c = cut;
+  c = goPortalSpeed;
   if(c<imgPlayerStatic.width){
-    console.log('true');
     ctx.drawImage(imgPlayerStatic, c,0,imgPlayerStatic.width-c,imgPlayerStatic.height,player.x,player.y,imgPlayerStatic.width-c,imgPlayerStatic.height);
-    cut++;
+    goPortalSpeed++;
   }
+}
+
+function newLevel(){
+  if(apearSpeed<=imgPlayerStatic.width){
+    portal = new Portal(0,canvas.height/2-imgPortal.height/2);
+    portal.draw();
+    player.x = portal.x+imgPortal.width/2;
+    player.y = portal.y+imgPortal.height/2-imgPlayerStatic.height/2;
+    ctx.drawImage(imgPlayerStatic,imgPlayerStatic.width-apearSpeed,0,apearSpeed,imgPlayerStatic.height,player.x,player.y,apearSpeed,imgPlayerStatic.height);
+    apearSpeed+=1;
+  } else if(player.x <= imgPortal.width+100){
+    player.x += player.dx;
+    player.update();
+  } else {
+      gameState.newLevel = false;
+      monstersGo = setInterval(function(){
+        if(gameState.pause != true && gameState.newLevel != true){
+            monsterArray.push(new Monster(canvas.width,randomNumber(0,(canvas.height-imgMonster.height)),2,2,15,50));
+        }
+      },2000);
+    }
 }
 
 //------------------Animation--------------------------//
 
-setInterval(function(){
-  if(keyboard.pause != true){
-      monsterArray.push(new Monster(canvas.width,randomNumber(0,(canvas.height-imgMonster.height)),2,2,15,50));
-  }
-},1000);
+
 
 function animation(){
-  if(keyboard.pause == true){
+  if(gameState.pause == true){
     $('.gameIntarface').toggleClass('hide');
     $('.lives').addClass('hide');
     $('.score').addClass('hide');
@@ -404,20 +434,29 @@ function animation(){
     return;
   }
 
-
+  // Has live then game continues
   if(player.live !=0){
     requestAnimationFrame(animation);
     ctx.clearRect(0,0, canvas.width, canvas.height);
 
+    if(gameState.newLevel == true) {
+      newLevel();
+      return;
+    }
+
+    // for finishing level and open portal
     if(player.barProgress >=200) {
+      clearInterval(monstersGo);
       fullBar();
-      if((player.x < portal.x+imgPortal.width/10*6 && player.x > portal.x) && (player.y+imgPlayerStatic.height > portal.y+imgPortal.height/4 && player.y<portal.y+imgPortal.height/5*4)){
+      if((player.x < portal.x+imgPortal.width/10*6 && player.x >= portal.x) && (player.y+imgPlayerStatic.height > portal.y+imgPortal.height/4 && player.y<portal.y+imgPortal.height/5*4)){
         player.x = portal.x+imgPortal.width/2;
         player.y = portal.y+imgPortal.height/2-imgPlayerStatic.height/2;
         nextLevel();
         return;
       }
     }
+
+    // game
     player.update();
 
     for (let i = 0; i < shootArray.length; i++) {
@@ -446,10 +485,10 @@ function animation(){
       if(monsterArray.length !=0){
         for(let j =0 ; j<shootArray.length; j++){
             if((monsterArray[i].x-shootArray[j].x-imgShoot.width<0) && (shootArray[j].y+imgShoot.height>monsterArray[i].y) && (shootArray[j].y < monsterArray[i].y+imgMonster.height)){
-              monsterArray.splice(i,1);
-              shootArray.splice(j,1);
               plusScore(monsterArray[i].score);
               plusBarProgress(monsterArray[i].barProgress);
+              monsterArray.splice(i,1);
+              shootArray.splice(j,1);
             }
         }
       }

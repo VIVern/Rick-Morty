@@ -7,20 +7,56 @@
   <title>Canvas</title>
 
   <link rel="stylesheet" href="css/main.css">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="js/plugin-preloader.js"></script>
+  <script src="js/preloader-custom.js"></script>
 </head>
 <body>
-  <div class="startMenu">
-    <div class="start">Start Game</div>
+
+  <div id="preloader">
+    <p class="preloader-text">Rick and Morty</p>
+    <div class="preloader-logo"><img src="images/preloaderLogo2.png" alt=""></div>
+  	<div class="dws-progress-bar"></div>
+  </div>
+
+<!-- All img we load -->
+  <div class="loadedImages">
+    <img src="images/bg.jpg" alt="">
+    <img src="images/cursor.png" alt="">
+    <img src="images/cursor-pointer.png" alt="">
+    <img src="images/live.png" alt="">
+    <img src="images/noLive.png" alt="">
+    <img src="images/monster1.png" alt="">
+    <img src="images/playerShoot.png" alt="">
+    <img src="images/playerStatic.png" alt="">
+    <img src="images/playerStatic.png" alt="">
+    <img src="images/shoot.png" alt="">
+    <img src="images/bodyFon.jpg" alt="">
+    <img src="images/barSmall.png" alt="">
+    <img src="images/portal.png" alt="">
+  </div>
+<!-------------------------------->
+
+  <div class="startMenu hideLoad">
+    <div class="startMenuBg">
+      <div class="start"><span>Start Game</span></div>
+      <div class="bestScore"><span>Best Score</span></div>
+      <div class="options"><span>Options</span></div>
+      <div class="about"><span>About</span></div>
+    </div>
   </div>
 
   <div class="gameIntarface hide">
-    <div class="continue">Continue</div>
-    <div class="restart">Restart</div>
-    <div class="exit">Exit</div>
+    <div class="continue"><span>Continue</span></div>
+    <div class="restart"><span>Restart</span></div>
+    <div class="exit"><span>Exit</sapn></div>
 
   </div>
 
+
   <span class="score hide">Score: 0</span>
+    <canvas class="bar hide"></canvas>
   <ul class="lives hide">
     <li data-live="true" class="hasLive"></li>
     <li data-live="true" class="hasLive"></li>
@@ -29,9 +65,9 @@
     <li data-live="true" class="hasLive"></li>
   </ul>
   <div class="gamefield">
-    <canvas></canvas>
+    <canvas class="game hideLoad"></canvas>
   </div>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
   <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
   <script src="canvas.js"></script>
 

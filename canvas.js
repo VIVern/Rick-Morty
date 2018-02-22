@@ -1,11 +1,17 @@
 //-------------------- Canvas config -----------------------//
 
 
-var canvas = document.querySelector('canvas');
+var canvas = document.querySelector('.game');
 var ctx=canvas.getContext('2d');
 
 canvas.width= window.innerWidth-500;
 canvas.height = window.innerHeight-300;
+
+var bar = document.querySelector('.bar');
+var ctxBar=bar.getContext('2d');
+
+bar.width = 200;
+bar.height = 20;
 
 
 //----------------------- Intarface style-----------------------//
@@ -39,6 +45,11 @@ $('.score').css({
   'left' : fieldMarginLeft
 });
 
+$('.bar').css({
+  'top' : fieldMarginTop - 30,
+  'left' : fieldMarginLeft + (canvas.width/2-100)
+})
+
 $('.gameIntarface').css({
   'width': canvas.width,
   'height' : canvas.height,
@@ -49,28 +60,35 @@ $('.gameIntarface').css({
 //------------- Used images -------------------------------//
 
 var imgPlayerStatic = new Image();
-imgPlayerStatic.src='playerStatic.png';
+imgPlayerStatic.src='images/playerStatic.png';
 imgPlayerStatic.width = 97;
 imgPlayerStatic.height = 114;
 
 var imgPlayerShoot = new Image();
-imgPlayerShoot.src = 'playerShoot.png';
+imgPlayerShoot.src = 'images/playerShoot.png';
 imgPlayerShoot.width = 97;
 imgPlayerShoot.height = 114;
 
 var imgShoot = new Image();
-imgShoot.src= 'shoot.png';
+imgShoot.src= 'images/shoot.png';
 imgShoot.width = 39;
 imgShoot.height = 21;
 
 
 var imgMonster = new Image();
-imgMonster.src = 'monster1.png';
+imgMonster.src = 'images/monster1.png';
 imgMonster.width= 90;
 imgMonster.height= 79;
 
+var imgBar = new Image();
+imgBar.src = "images/barSmall.png";
+imgBar.width = 200;
+imgBar.Height = 20;
 
-
+var imgPortal = new Image();
+imgPortal.src = "images/portal.png";
+imgPortal.width = 94;
+imgPortal.height = 250;
 
 //-------------- Variables --------------------------------//
 
@@ -85,11 +103,12 @@ var keyboard = {
 var player;
 var shootArray;
 var monsterArray;
-
+var portal;
+var cut=0;
 
 //------------ Objects in game-----------------------------//
 
-function Player(x,y,dx,dy,live,score) {
+function Player(x,y,dx,dy,live,score,progressBar) {
   this.x = x;
   this.y = y;
   this.dx= dx;
@@ -98,7 +117,8 @@ function Player(x,y,dx,dy,live,score) {
   this.active = false;
 
   this.live = live;
-  this.score = 0;
+  this.score = score;
+  this.barProgress = progressBar;
 
   this.draw = function() {
     if(this.active == false){
@@ -151,11 +171,23 @@ function Shoot(x,y,dx) {
   }
 }
 
-function Monster(x,y,dx,dy) {
+function Portal(x,y){
+  this.x=x;
+  this.y=y;
+
+  this.draw = function(){
+    ctx.drawImage(imgPortal,x,y);
+  }
+}
+
+function Monster(x,y,dx,dy,scoreValue,barValue) {
   this.x = x;
   this.y = y;
   this.dx= dx;
   this.dy = dy;
+
+  this.score = scoreValue;
+  this.barProgress = barValue;
 
   this.draw = function(){
     ctx.drawImage(imgMonster,this.x,this.y);
@@ -239,43 +271,41 @@ window.addEventListener('keypress',function(event){
 
 //----------------------Intarface events ---------------//
 
-$('.continue').on('click', function(){
+$('.continue span').on('click', function(){
   keyboard.pause =false;
   $('.gameIntarface').toggleClass('hide');
   $('.lives').removeClass('hide');
   $('.score').removeClass('hide');
+  $('.bar').removeClass('hide');
   animation();
 });
 
-$('.restart').on('click', function(){
-  player = new Player(300,300,2,2,5,0);
-  shootArray =[];
-  monsterArray = [];
-  fullLive();
-  getScore();
+$('.restart span').on('click', function(){
+  reset();
   $('.gameIntarface').toggleClass('hide');
   $('.lives').removeClass('hide');
   $('.score').removeClass('hide');
+  $('.bar').removeClass('hide');
   keyboard.pause = false;
   animation();
 });
 
-$('.exit').on('click', function(){
+$('.exit span').on('click', function(){
   ctx.clearRect(0,0, canvas.width, canvas.height);
+  $('.lives').addClass('hide');
+  $('.score').addClass('hide');
+  $('.bar').addClass('hide');
   $('.gameIntarface').toggleClass('hide');
   $('.startMenu').removeClass('hide');
 });
 
-$('.start').on('click', function(){
-  player = new Player(300,300,2,2,5);
-  shootArray =[];
-  monsterArray = [];
-  fullLive();
-  getScore();
+$('.start span').on('click', function(){
+  reset();
   keyboard.pause = false;
   $('.startMenu').addClass('hide');
   $('.lives').removeClass('hide');
   $('.score').removeClass('hide');
+  $('.bar').removeClass('hide');
   animation();
 });
 
@@ -283,11 +313,27 @@ $('.start').on('click', function(){
 
 //-------------- Utility Functions ---------------------//
 
+function randomNumber(min, max) {
+    var rand = min - 0.5 + Math.random() * (max - min + 1)
+    rand = Math.round(rand);
+    return rand;
+}
+
 function getDistance(x1,y1,x2,y2) {
   return Math.sqrt(Math.pow((x2-x1),2)+Math.pow((y2-y1),2));
 }
 
+function reset(){
+  player = new Player(300,300,2,2,5,0,0);
+  shootArray =[];
+  monsterArray = [];
+  ctxBar.clearRect(0,0,bar.width,bar.height);
+  fullLive();
+  updateScore();
+}
+
 function minusLive() {
+  player.live-=1;
   let lives = $('.lives li[data-live="true"]');
   lives[lives.length-1].classList.remove('hasLive');
   lives[lives.length-1].classList.add('noLive');
@@ -304,29 +350,74 @@ function fullLive(){
   }
 }
 
-function getScore(){
+function plusScore(value){
+  player.score+=value;
+  updateScore();
+}
+
+function plusBarProgress(value){
+  player.barProgress+=value;
+  updateBar(player.barProgress);
+}
+
+function fullBar(){
+  portal = new Portal(0,canvas.height/2-imgPortal.height/2);
+  portal.draw();
+}
+
+function updateScore(){
   $('.score').html(`Score: ${player.score}`);
+}
+
+function updateBar(updateValue){
+  ctxBar.clearRect(0,0,bar.width,bar.height);
+  ctxBar.drawImage(imgBar, 0,0, updateValue, 20,0,0,updateValue,20);
+  $('.bar').css('box-shadow','4px 4px 6px #4eb236, -4px -4px 6px #4eb236, -4px 4px 6px #4eb236, 4px -4px 6px #4eb236');
+  setTimeout(function(){
+    $('.bar').css('box-shadow','4px 4px 6px #00b1c1, -4px -4px 6px #00b1c1, -4px 4px 6px #00b1c1, 4px -4px 6px #00b1c1');
+  },300);
+}
+
+function nextLevel(c){
+  c = cut;
+  if(c<imgPlayerStatic.width){
+    console.log('true');
+    ctx.drawImage(imgPlayerStatic, c,0,imgPlayerStatic.width-c,imgPlayerStatic.height,player.x,player.y,imgPlayerStatic.width-c,imgPlayerStatic.height);
+    cut++;
+  }
 }
 
 //------------------Animation--------------------------//
 
 setInterval(function(){
   if(keyboard.pause != true){
-      monsterArray.push(new Monster(canvas.width,Math.random()*canvas.height,2,2));
+      monsterArray.push(new Monster(canvas.width,randomNumber(0,(canvas.height-imgMonster.height)),2,2,15,50));
   }
-},2000);
+},1000);
 
 function animation(){
   if(keyboard.pause == true){
-      $('.gameIntarface').toggleClass('hide');
-      $('.lives').addClass('hide');
-      $('.score').addClass('hide');
-      return;
-    }
+    $('.gameIntarface').toggleClass('hide');
+    $('.lives').addClass('hide');
+    $('.score').addClass('hide');
+    $('.bar').addClass('hide');
+    return;
+  }
+
+
   if(player.live !=0){
     requestAnimationFrame(animation);
     ctx.clearRect(0,0, canvas.width, canvas.height);
 
+    if(player.barProgress >=200) {
+      fullBar();
+      if((player.x < portal.x+imgPortal.width/10*6 && player.x > portal.x) && (player.y+imgPlayerStatic.height > portal.y+imgPortal.height/4 && player.y<portal.y+imgPortal.height/5*4)){
+        player.x = portal.x+imgPortal.width/2;
+        player.y = portal.y+imgPortal.height/2-imgPlayerStatic.height/2;
+        nextLevel();
+        return;
+      }
+    }
     player.update();
 
     for (let i = 0; i < shootArray.length; i++) {
@@ -344,6 +435,7 @@ function animation(){
     for( let i=0; i<monsterArray.length; i++){
       if(monsterArray[i].x < 0){
         monsterArray.splice(i,1);
+        minusLive();
       }
       monsterArray[i].update();
     }
@@ -356,8 +448,8 @@ function animation(){
             if((monsterArray[i].x-shootArray[j].x-imgShoot.width<0) && (shootArray[j].y+imgShoot.height>monsterArray[i].y) && (shootArray[j].y < monsterArray[i].y+imgMonster.height)){
               monsterArray.splice(i,1);
               shootArray.splice(j,1);
-              player.score+=10;
-              getScore();
+              plusScore(monsterArray[i].score);
+              plusBarProgress(monsterArray[i].barProgress);
             }
         }
       }
@@ -370,10 +462,11 @@ function animation(){
         monsterArray.splice(i,1);
         player.x = 200;
         player.y = 200;
-        player.live -=1;
         minusLive();
       }
     }
+
+
   }
   else{
     $('.gameIntarface').toggleClass('hide');

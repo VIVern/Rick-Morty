@@ -1,6 +1,5 @@
 //-------------------- Canvas config -----------------------//
 
-
 var canvas = document.querySelector('.game');
 var ctx=canvas.getContext('2d');
 
@@ -308,6 +307,8 @@ $('.exit span').on('click', function(){
 $('.start span').on('click', function(){
   reset();
   gameState.pause = false;
+
+  document.querySelector('audio').pause();
   $('.startMenu').addClass('hide');
   $('.lives').removeClass('hide');
   $('.score').removeClass('hide');

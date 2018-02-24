@@ -58,15 +58,25 @@ $('.gameIntarface').css({
 
 //------------- Used images -------------------------------//
 
-var imgPlayerStatic = new Image();
-imgPlayerStatic.src='images/playerStatic.png';
-imgPlayerStatic.width = 97;
-imgPlayerStatic.height = 114;
+var imgPlayerMortyStatic = new Image();
+imgPlayerMortyStatic.src='images/playerMortyStatic.png';
+imgPlayerMortyStatic.width = 85;
+imgPlayerMortyStatic.height = 84;
 
-var imgPlayerShoot = new Image();
-imgPlayerShoot.src = 'images/playerShoot.png';
-imgPlayerShoot.width = 97;
-imgPlayerShoot.height = 114;
+var imgPlayerMortyShoot = new Image();
+imgPlayerMortyShoot.src = 'images/playerMortyShoot.png';
+imgPlayerMortyShoot.width = 85;
+imgPlayerMortyShoot.height = 80;
+
+var imgPlayerRickStatic = new Image();
+imgPlayerRickStatic.src='images/playerRickStatic.png';
+imgPlayerRickStatic.width = 97;
+imgPlayerRickStatic.height = 114;
+
+var imgPlayerRickShoot = new Image();
+imgPlayerRickShoot.src = 'images/playerRickShoot.png';
+imgPlayerRickShoot.width = 97;
+imgPlayerRickShoot.height = 114;
 
 var imgShoot = new Image();
 imgShoot.src= 'images/shoot.png';
@@ -104,12 +114,15 @@ var gameState = {
 }
 
 var player;
+var imgPlayerStatic; // make dynamic
+var imgPlayerShoot; // make dynamic
 var shootArray;
 var monsterArray;
 var monstersGo;
 var portal;
 var goPortalSpeed=0;
 var apearSpeed = 0;
+
 
 //------------ Objects in game-----------------------------//
 
@@ -260,7 +273,7 @@ window.addEventListener('keyup', function(event){
   if(event.keyCode == 32){
     setTimeout(function(){
       player.active = false;
-    },200);
+    },400);
   }
 })
 
@@ -302,13 +315,24 @@ $('.exit span').on('click', function(){
   $('.bar').addClass('hide');
   $('.gameIntarface').toggleClass('hide');
   $('.startMenu').removeClass('hide');
+  document.querySelector('audio').play();
 });
 
 $('.start span').on('click', function(){
   reset();
   gameState.pause = false;
 
+  // Player picker
   document.querySelector('audio').pause();
+  if(document.querySelector('.check').hasAttribute('data-rick')){
+    imgPlayerStatic = imgPlayerRickStatic;
+    imgPlayerShoot = imgPlayerRickShoot;
+  }
+  if(document.querySelector('.check').hasAttribute('data-morty')){
+    imgPlayerStatic = imgPlayerMortyStatic;
+    imgPlayerShoot = imgPlayerMortyShoot;
+  }
+
   $('.startMenu').addClass('hide');
   $('.lives').removeClass('hide');
   $('.score').removeClass('hide');

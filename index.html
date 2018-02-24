@@ -28,9 +28,10 @@
     <img src="images/live.png" alt="">
     <img src="images/noLive.png" alt="">
     <img src="images/monster1.png" alt="">
-    <img src="images/playerShoot.png" alt="">
-    <img src="images/playerStatic.png" alt="">
-    <img src="images/playerStatic.png" alt="">
+    <img src="images/playerRickShoot.png" alt="">
+    <img src="images/playerRickStatic.png" alt="">
+    <img src="images/playerMortyStatic.png" alt="">
+    <img src="images/playerMortyShoot.png" alt="">
     <img src="images/shoot.png" alt="">
     <img src="images/bodyFon.jpg" alt="">
     <img src="images/barSmall.png" alt="">
@@ -38,10 +39,12 @@
   </div>
 <!-------------------------------->
 
-  <audio src="sound/Rick_and_Morty_Soundtrack.mp3" autoplay loop></audio>
+<audio src="sound/Rick_and_Morty_Soundtrack.mp3" autoplay loop></audio>
 
   <div class="startMenu hideLoad">
     <div class="startMenuBg">
+      <img src="images/playerRickStatic.png" alt="" data-rick class="player check">
+      <img src="images/playerMortyStatic.png" alt="" data-morty class="player">
       <div class="start"><span>Start Game</span></div>
       <div class="bestScore"><span>Best Score</span></div>
       <div class="options"><span>Options</span></div>
@@ -70,6 +73,7 @@
     <canvas class="game hideLoad"></canvas>
   </div>
 
+  <script src="js/player-check.js"></script>
   <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
   <script src="canvas.js"></script>
 

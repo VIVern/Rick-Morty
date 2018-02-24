@@ -4,7 +4,7 @@ $(document).ready(function () {
         dBody        = $('body'), //обращаемся к body
         percent      = 100 / imagesCount, // количество % на одну картинку
         progress     = 0, // точка отсчета
-        imgSum       = 5, // количество картинок
+        imgSum       = imagesCount, // количество картинок
         loadedImg    = 0; // счетчик загрузки картинок
 
     if (imagesCount >= imgSum && imagesCount > 0) {

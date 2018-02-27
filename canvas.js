@@ -3,8 +3,8 @@
 var canvas = document.querySelector('.game');
 var ctx=canvas.getContext('2d');
 
-canvas.width= window.innerWidth-500;
-canvas.height = window.innerHeight-300;
+canvas.width= 1400;
+canvas.height = 620;
 
 var bar = document.querySelector('.bar');
 var ctxBar=bar.getContext('2d');
@@ -67,6 +67,8 @@ var imgPlayerMortyShoot = new Image();
 imgPlayerMortyShoot.src = 'images/playerMortyShoot.png';
 imgPlayerMortyShoot.width = 85;
 imgPlayerMortyShoot.height = 80;
+imgPlayerMortyShoot.xShoot = 50;
+imgPlayerMortyShoot.yShoot = 50;
 
 var imgPlayerRickStatic = new Image();
 imgPlayerRickStatic.src='images/playerRickStatic.png';
@@ -77,6 +79,8 @@ var imgPlayerRickShoot = new Image();
 imgPlayerRickShoot.src = 'images/playerRickShoot.png';
 imgPlayerRickShoot.width = 97;
 imgPlayerRickShoot.height = 114;
+imgPlayerRickShoot.xShoot = 60;
+imgPlayerRickShoot.yShoot = 80;
 
 var imgShoot = new Image();
 imgShoot.src= 'images/shoot.png';
@@ -99,6 +103,11 @@ imgPortal.src = "images/portal.png";
 imgPortal.width = 94;
 imgPortal.height = 250;
 
+var imgHelp = new Image();
+imgHelp.src = "images/help.png";
+imgHelp.width = 200;
+imgHelp.height = 123;
+
 //-------------- Variables --------------------------------//
 
 var keyboard = {
@@ -114,8 +123,8 @@ var gameState = {
 }
 
 var player;
-var imgPlayerStatic; // make dynamic
-var imgPlayerShoot; // make dynamic
+var imgPlayerStatic;
+var imgPlayerShoot;
 var shootArray;
 var monsterArray;
 var monstersGo;
@@ -155,7 +164,7 @@ function Player(x,y,dx,dy,live,score,progressBar) {
     }
 
     //move down
-    if(keyboard.down == true && this.y < canvas.height-116) {
+    if(keyboard.down == true && this.y < canvas.height-imgPlayerStatic.height) {
       this.y+=4;
     }
 
@@ -165,7 +174,7 @@ function Player(x,y,dx,dy,live,score,progressBar) {
     }
 
     //move right
-    if(keyboard.right == true && this.x < canvas.width-97) {
+    if(keyboard.right == true && this.x < canvas.width-imgPlayerStatic.width) {
       this.x+=4;
     }
 
@@ -280,7 +289,8 @@ window.addEventListener('keyup', function(event){
 window.addEventListener('keypress',function(event){
   //shoot
   if(event.keyCode == 32) {
-    shootArray.push(new Shoot(player.x+60,player.y+70,4)); // random numbers to fix;
+    document.querySelector('.shootSound').play();
+    shootArray.push(new Shoot(player.x+imgPlayerShoot.xShoot,player.y+imgPlayerShoot.yShoot,4)); // random numbers to fix;
     player.active=true;
   }
 
@@ -315,7 +325,7 @@ $('.exit span').on('click', function(){
   $('.bar').addClass('hide');
   $('.gameIntarface').toggleClass('hide');
   $('.startMenu').removeClass('hide');
-  document.querySelector('audio').play();
+  document.querySelector('.mainSound').play();
 });
 
 $('.start span').on('click', function(){
@@ -323,7 +333,7 @@ $('.start span').on('click', function(){
   gameState.pause = false;
 
   // Player picker
-  document.querySelector('audio').pause();
+  document.querySelector('.mainSound').pause();
   if(document.querySelector('.check').hasAttribute('data-rick')){
     imgPlayerStatic = imgPlayerRickStatic;
     imgPlayerShoot = imgPlayerRickShoot;
@@ -466,6 +476,7 @@ function animation(){
 
     if(gameState.newLevel == true) {
       newLevel();
+      ctx.drawImage(imgHelp,canvas.width/2-imgHelp.width/2,canvas.height-imgHelp.height);
       return;
     }
 

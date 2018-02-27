@@ -4,5 +4,17 @@ $('.player').on('click',function(){
   }else {
     $('.check').removeClass('check');
     $(this).addClass('check');
+    if(document.querySelector('.check').hasAttribute('data-rick')){
+      $('.rick').attr('src','images/rickSelected.png');
+      $('.rickSelected').toggleClass('hide');
+      $('.morty').attr('src','images/morty.png');
+      $('.mortySelected').toggleClass('hide');
+    }
+    if(document.querySelector('.check').hasAttribute('data-morty')){
+      $('.rick').attr('src','images/rick.png');
+      $('.rickSelected').toggleClass('hide');
+      $('.morty').attr('src','images/mortySelected.png');
+      $('.mortySelected').toggleClass('hide');
+    }
   }
 })

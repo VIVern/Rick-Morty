@@ -36,15 +36,22 @@
     <img src="images/bodyFon.jpg" alt="">
     <img src="images/barSmall.png" alt="">
     <img src="images/portal.png" alt="">
+    <img src="images/morty.png" alt="">
+    <img src="images/mortySelected.png" alt="">
+    <img src="images/rick.png" alt="">
+    <img src="images/rickSelected.png" alt="">
   </div>
 <!-------------------------------->
 
-<audio src="sound/Rick_and_Morty_Soundtrack.mp3" autoplay loop></audio>
+<audio src="sound/Rick_and_Morty_Soundtrack.mp3" autoplay loop class="mainSound"></audio>
+<audio src="sound/Sound_16482.mp3" class="shootSound"></audio>
 
   <div class="startMenu hideLoad">
     <div class="startMenuBg">
-      <img src="images/playerRickStatic.png" alt="" data-rick class="player check">
-      <img src="images/playerMortyStatic.png" alt="" data-morty class="player">
+      <img src="images/rickSelected.png" alt="" data-rick class="player rick check">
+      <span class="rickSelected">Selected</span>
+      <img src="images/morty.png" alt="" data-morty class="player morty">
+      <span class="mortySelected hide">Selected</span>
       <div class="start"><span>Start Game</span></div>
       <div class="bestScore"><span>Best Score</span></div>
       <div class="options"><span>Options</span></div>

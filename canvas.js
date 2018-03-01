@@ -58,6 +58,8 @@ $('.gameIntarface').css({
 
 //------------- Used images -------------------------------//
 
+
+//Players
 var imgPlayerMortyStatic = new Image();
 imgPlayerMortyStatic.src='images/playerMortyStatic.png';
 imgPlayerMortyStatic.width = 85;
@@ -82,17 +84,52 @@ imgPlayerRickShoot.height = 114;
 imgPlayerRickShoot.xShoot = 60;
 imgPlayerRickShoot.yShoot = 80;
 
-var imgShoot = new Image();
-imgShoot.src= 'images/shoot.png';
-imgShoot.width = 39;
-imgShoot.height = 21;
 
+//shots pictures
+var imgShot = new Image();
+imgShot.src= 'images/shoot.png';
+imgShot.width = 39;
+imgShot.height = 21;
 
+var imgMonsterShot = new Image();
+imgMonsterShot.src= 'images/monsterShot.png';
+imgMonsterShot.width = 33;
+imgMonsterShot.height = 8;
+
+var imgMonsterShot30 = new Image();
+imgMonsterShot30.src = 'images/monsterShot30deg.png';
+imgMonsterShot30.width = 33;
+imgMonsterShot30.height = 24;
+
+var imgMonsterShot30m = new Image();
+imgMonsterShot30m.src = 'images/monsterShot-30deg.png';
+imgMonsterShot30m.width = 33;
+imgMonsterShot30m.height = 24;
+
+var imgMonsterShot20 = new Image();
+imgMonsterShot20.src = 'images/monsterShot20deg.png';
+imgMonsterShot20.width = 33;
+imgMonsterShot20.height = 17;
+
+var imgMonsterShot20m = new Image();
+imgMonsterShot20m.src = 'images/monsterShot-20deg.png';
+imgMonsterShot20m.width = 33;
+imgMonsterShot20m.height = 17;
+
+//Monsters
 var imgMonster = new Image();
-imgMonster.src = 'images/monster1.png';
-imgMonster.width= 90;
-imgMonster.height= 79;
+imgMonster.src = 'images/monster2.png';
+imgMonster.width= 237;
+imgMonster.height= 63;
+imgMonster.frame = 79;
 
+var imgMonsterDeath = new Image();
+imgMonsterDeath.src = 'images/monster2Death.png';
+imgMonsterDeath.width = 76;
+imgMonsterDeath.height = 39;
+imgMonsterDeath.frame = 38;
+
+//Intarface stuf
 var imgBar = new Image();
 imgBar.src = "images/barSmall.png";
 imgBar.width = 200;
@@ -122,11 +159,20 @@ var gameState = {
   newLevel : true
 }
 
+var waves = {
+  wave1 : true,
+  wave2: false,
+  wave3: false,
+  wave4: false,
+  wave5: false
+}
+
 var player;
 var imgPlayerStatic;
 var imgPlayerShoot;
 var shootArray;
 var monsterArray;
+var monsterShootArray;
 var monstersGo;
 var portal;
 var goPortalSpeed=0;
@@ -188,12 +234,31 @@ function Shoot(x,y,dx) {
   this.dx= dx;
 
   this.draw = function() {
-    ctx.drawImage(imgShoot,this.x,this.y);
+    ctx.drawImage(imgShot,this.x,this.y);
   }
 
   this.update = function() {
     this.x+=dx;
 
+    this.draw();
+  }
+}
+
+function MonsterShoot(img,x,y,dx,dy,damage) {
+  this.img = img
+  this.x = x;
+  this.y = y;
+  this.dx= dx;
+  this.dy= dy;
+  this.damage = damage;
+
+  this.draw = function() {
+    ctx.drawImage(this.img,this.x,this.y);
+  }
+
+  this.update = function() {
+    this.x-=this.dx;
+    this.y-=this.dy;
     this.draw();
   }
 }
@@ -207,17 +272,43 @@ function Portal(x,y){
   }
 }
 
-function Monster(x,y,dx,dy,scoreValue,barValue) {
+function MonsterSimple(img,x,y,dx,dy,scoreValue,barValue,health,damage) {
+  this.img = img;
   this.x = x;
   this.y = y;
   this.dx= dx;
   this.dy = dy;
-
   this.score = scoreValue;
   this.barProgress = barValue;
+  this.health = health;
+  this.damage = damage;
+  this.live = true;
+
+  this.frame=0;
+  this.animSpeed=0;
 
   this.draw = function(){
-    ctx.drawImage(imgMonster,this.x,this.y);
+    if(this.img == imgMonster){
+      if(this.animSpeed > 4){
+        this.frame = (this.frame===this.img.frame ? 0 : this.frame+this.img.frame);
+        this.animSpeed = 0;
+      }
+      ctx.drawImage(this.img,this.frame,0,this.img.frame,this.img.height,this.x,this.y,this.img.frame,this.img.height); //fix random frame geometry
+      this.animSpeed+=1;
+    }
+    if(this.img == imgMonsterDeath){
+      this.frame = 0;
+      if(this.animSpeed > 8){
+        this.frame=this.img.frame;
+      }
+      ctx.drawImage(this.img,this.frame,0,this.img.frame,this.img.height,this.x,this.y,this.img.frame,this.img.height); //fix random frame geometry
+      this.animSpeed+=1;
+      this.x+=dx;
+    }
+  }
+
+  this.death = function (){
+    ctx.drawImage(imgMonsterDeath,this.x,this.y);
   }
 
   this.update = function(){
@@ -226,6 +317,164 @@ function Monster(x,y,dx,dy,scoreValue,barValue) {
   }
 }
 
+function MonsterSimpleSpeed(img,x,y,dx,dy,scoreValue,barValue,health,damage) {
+  this.img = img;
+  this.x = x;
+  this.y = y;
+  this.dx= dx;
+  this.dy = dy;
+  this.score = scoreValue;
+  this.barProgress = barValue;
+  this.health = health;
+  this.damage = damage;
+  this.live = true;
+
+  this.frame=0;
+  this.animSpeed=0;
+
+  this.draw = function(){
+    if(this.img == imgMonster){
+      if(this.animSpeed > 4){
+        this.frame = (this.frame===this.img.frame ? 0 : this.frame+this.img.frame);
+        this.animSpeed = 0;
+      }
+      ctx.drawImage(this.img,this.frame,0,this.img.frame,this.img.height,this.x,this.y,this.img.frame,this.img.height); //fix random frame geometry
+      this.animSpeed+=1;
+    }
+    if(this.img == imgMonsterDeath){
+      this.frame = 0;
+      if(this.animSpeed > 8){
+        this.frame=this.img.frame;
+      }
+      ctx.drawImage(this.img,this.frame,0,this.img.frame,this.img.height,this.x,this.y,this.img.frame,this.img.height); //fix random frame geometry
+      this.animSpeed+=1;
+      this.x+=dx;
+    }
+  }
+
+  this.death = function (){
+    ctx.drawImage(imgMonsterDeath,this.x,this.y);
+  }
+
+  this.update = function(){
+    this.x-=dx;
+    this.draw();
+  }
+}
+
+function MonsterShooter(img,x,y,dx,dy,scoreValue,barValue,health,damage) {
+  this.img = img;
+  this.x = x;
+  this.y = y;
+  this.dx= dx;
+  this.dy = dy;
+  this.score = scoreValue;
+  this.barProgress = barValue;
+  this.health = health;
+  this.damage = damage;
+  this.live = true;
+
+  this.frame=0;
+  this.animSpeed=0;
+  this.shootSpeed =0;
+
+  this.draw = function(){
+    if(this.img == imgMonster){
+      if(this.animSpeed > 4){
+        this.frame = (this.frame===this.img.frame ? 0 : this.frame+this.img.frame);
+        this.animSpeed = 0;
+      }
+      ctx.drawImage(this.img,this.frame,0,this.img.frame,this.img.height,this.x,this.y,this.img.frame,this.img.height); //fix random frame geometry
+      this.animSpeed+=1;
+    }
+    if(this.img == imgMonsterDeath){
+      this.frame = 0;
+      if(this.animSpeed > 8){
+        this.frame=this.img.frame;
+      }
+      ctx.drawImage(this.img,this.frame,0,this.img.frame,this.img.height,this.x,this.y,this.img.frame,this.img.height); //fix random frame geometry
+      this.animSpeed+=1;
+      this.x+=dx;
+    }
+  }
+
+  this.death = function (){
+    ctx.drawImage(imgMonsterDeath,this.x,this.y);
+  }
+
+  this.shoot = function(){
+    if(this.shootSpeed > 100 && this.live==true){
+      monsterShootArray.push(new MonsterShoot(imgMonsterShot,this.x,this.y,3,0,1));
+      this.shootSpeed = 0;
+    }
+    this.shootSpeed+=1;
+  }
+
+  this.update = function(){
+    this.x-=dx;
+    this.shoot();
+    this.draw();
+  }
+}
+
+function MonsterExplosion(img,x,y,dx,dy,scoreValue,barValue,health,damage) {
+  this.img = img;
+  this.x = x;
+  this.y = y;
+  this.dx= dx;
+  this.dy = dy;
+  this.score = scoreValue;
+  this.barProgress = barValue;
+  this.health = health;
+  this.damage = damage;
+  this.live = true;
+  this.boom = true;
+
+  this.frame=0;
+  this.animSpeed=0;
+  this.shootSpeed =0;
+
+  this.draw = function(){
+    if(this.img == imgMonster){
+      if(this.animSpeed > 4){
+        this.frame = (this.frame===this.img.frame ? 0 : this.frame+this.img.frame);
+        this.animSpeed = 0;
+      }
+      ctx.drawImage(this.img,this.frame,0,this.img.frame,this.img.height,this.x,this.y,this.img.frame,this.img.height); //fix random frame geometry
+      this.animSpeed+=1;
+    }
+    if(this.img == imgMonsterDeath){
+      this.frame = 0;
+      if(this.animSpeed > 8){
+        this.frame=this.img.frame;
+      }
+      ctx.drawImage(this.img,this.frame,0,this.img.frame,this.img.height,this.x,this.y,this.img.frame,this.img.height); //fix random frame geometry
+      this.animSpeed+=1;
+      this.x+=dx;
+    }
+  }
+
+  this.death = function (){
+    ctx.drawImage(imgMonsterDeath,this.x,this.y);
+  }
+
+  this.explosion = function(){
+    if(this.live==false && this.boom == true){
+      monsterShootArray.push(new MonsterShoot(imgMonsterShot,this.x,this.y,3,0,1));
+      monsterShootArray.push(new MonsterShoot(imgMonsterShot20,this.x,this.y,3,1,1));
+      monsterShootArray.push(new MonsterShoot(imgMonsterShot20m,this.x,this.y,3,-1,1));
+      monsterShootArray.push(new MonsterShoot(imgMonsterShot30,this.x,this.y,3,2,1));
+      monsterShootArray.push(new MonsterShoot(imgMonsterShot30m,this.x,this.y,3,-2,1));
+      this.boom = false;
+    }
+  }
+
+  this.update = function(){
+    this.x-=dx;
+    this.explosion();
+    this.draw();
+  }
+}
 // -------------------- Keyboard events------------------//
 
 window.addEventListener('keydown', function(event){
@@ -367,6 +616,7 @@ function getDistance(x1,y1,x2,y2) {
 function reset(){
   player = new Player(300,300,2,2,5,0,0);
   shootArray =[];
+  monsterShootArray =[];
   monsterArray = [];
   goPortalSpeed = 0;
   apearSpeed = 0;
@@ -377,12 +627,14 @@ function reset(){
   updateScore();
 }
 
-function minusLive() {
-  player.live-=1;
+function minusLive(damage) {
+  player.live-=damage;
   let lives = $('.lives li[data-live="true"]');
-  lives[lives.length-1].classList.remove('hasLive');
-  lives[lives.length-1].classList.add('noLive');
-  lives[lives.length-1].setAttribute('data-live', false);
+  for(let i = lives.length-1 , j = 0; j<damage; i--,j++){
+    lives[i].classList.remove('hasLive');
+    lives[i].classList.add('noLive');
+    lives[i].setAttribute('data-live', false);
+  }
 
 }
 
@@ -448,12 +700,95 @@ function newLevel(){
     player.update();
   } else {
       gameState.newLevel = false;
-      monstersGo = setInterval(function(){
-        if(gameState.pause != true && gameState.newLevel != true){
-            monsterArray.push(new Monster(canvas.width,randomNumber(0,(canvas.height-imgMonster.height)),2,2,15,50));
-        }
-      },2000);
+      level1();
+
     }
+}
+
+// GameLevels
+
+function level1(){
+  let tick=0;
+  if(waves.wave1 == true){
+    monstersGo = setInterval(function(){
+      if(gameState.pause != true && gameState.newLevel != true && tick !=10){
+        monsterArray.push(new MonsterSimple(imgMonster,canvas.width,randomNumber(0,(canvas.height-imgMonster.height)),1,0,15,1,2,1));
+      } else{
+        waves.wave1 = false;
+        waves.wave2 =true;
+        tick=0;
+        clearInterval(monstersGo);
+        level1();
+      }
+      tick+=1;
+    },2000);
+  }
+  if(waves.wave2 == true){
+    monstersGo = setInterval(function(){
+      if(gameState.pause != true && gameState.newLevel != true && tick !=15){
+        monsterArray.push(new MonsterSimpleSpeed(imgMonster,canvas.width,randomNumber(0,(canvas.height-imgMonster.height)),3,0,15,1,1,2));
+      } else{
+        waves.wave2 = false;
+        waves.wave3 =true;
+        tick=0;
+        clearInterval(monstersGo);
+        level1();
+      }
+      tick+=1;
+    },1000);
+  }
+  if(waves.wave3 == true){
+    monstersGo = setInterval(function(){
+      if(gameState.pause != true && gameState.newLevel != true && tick !=15){
+        monsterArray.push(new MonsterShooter(imgMonster,canvas.width,randomNumber(0,(canvas.height-imgMonster.height)),2,0,15,1,1,1));
+      } else{
+        waves.wave3 = false;
+        waves.wave4 =true;
+        tick=0;
+        clearInterval(monstersGo);
+        level1();
+      }
+      tick+=1;
+    },2000);
+  }
+  if(waves.wave4 == true){
+    monstersGo = setInterval(function(){
+      if(gameState.pause != true && gameState.newLevel != true && tick !=30){
+        monsterArray.push(new MonsterExplosion(imgMonster,canvas.width,randomNumber(0,(canvas.height-imgMonster.height)),2,0,15,1,1,1));
+      } else{
+        waves.wave4 = false;
+        waves.wave5 =true;
+        tick=0;
+        clearInterval(monstersGo);
+      }
+      tick+=1;
+    },1000);
+  }
+  if(waves.wave5 == true){
+    monstersGo = setInterval(function(){
+      if(gameState.pause != true && gameState.newLevel != true && tick !=30){
+        let r = randomNumber(1,12);
+        if(r<=3){
+          monsterArray.push(new MonsterSimple(imgMonster,canvas.width,randomNumber(0,(canvas.height-imgMonster.height)),1,0,15,1,2,1));
+        }
+        if(r>3 && r<=6){
+          monsterArray.push(new MonsterSimpleSpeed(imgMonster,canvas.width,randomNumber(0,(canvas.height-imgMonster.height)),3,0,15,1,1,2));
+        }
+        if(r>6 && r<=9){
+          monsterArray.push(new MonsterShooter(imgMonster,canvas.width,randomNumber(0,(canvas.height-imgMonster.height)),2,0,15,1,1,1));
+        }
+        if(r>9 && r<=12){
+          monsterArray.push(new MonsterExplosion(imgMonster,canvas.width,randomNumber(0,(canvas.height-imgMonster.height)),2,0,15,1,1,1));
+        }
+      } else{
+        waves.wave5 = false;
+        tick=0;
+        clearInterval(monstersGo);
+        level1();
+      }
+      tick+=1;
+    },1000);
+  }
 }
 
 //------------------Animation--------------------------//
@@ -470,7 +805,7 @@ function animation(){
   }
 
   // Has live then game continues
-  if(player.live !=0){
+  if(player.live >0){
     requestAnimationFrame(animation);
     ctx.clearRect(0,0, canvas.width, canvas.height);
 
@@ -507,24 +842,45 @@ function animation(){
       }
     };
 
+    for (let i = 0; i < monsterShootArray.length; i++) {
+      if(monsterShootArray[i].x<0 || monsterShootArray[i].y<0 || monsterShootArray[i].y>canvas.height){
+        monsterShootArray.splice(i,1);
+      }
+      if(monsterShootArray.length == 0){
+        break;
+      }
+      else {
+        monsterShootArray[i].update();
+      }
+    };
+
     for( let i=0; i<monsterArray.length; i++){
       if(monsterArray[i].x < 0){
+        minusLive(monsterArray[i].damage);
         monsterArray.splice(i,1);
-        minusLive();
       }
       monsterArray[i].update();
     }
 
 
-    // shooting
+    // Player shooting
     for(let i = 0 ; i<monsterArray.length; i++){
       if(monsterArray.length !=0){
         for(let j =0 ; j<shootArray.length; j++){
-            if((monsterArray[i].x-shootArray[j].x-imgShoot.width<0) && (shootArray[j].y+imgShoot.height>monsterArray[i].y) && (shootArray[j].y < monsterArray[i].y+imgMonster.height)){
-              plusScore(monsterArray[i].score);
-              plusBarProgress(monsterArray[i].barProgress);
-              monsterArray.splice(i,1);
-              shootArray.splice(j,1);
+            if((monsterArray[i].x-shootArray[j].x-imgShot.width<0) && (shootArray[j].y+imgShot.height>monsterArray[i].y) && (shootArray[j].y < monsterArray[i].y+imgMonster.height)){
+              monsterArray[i].health-=1;
+              if(monsterArray[i].live == true){
+                shootArray.splice(j,1);
+              }
+              if(monsterArray[i].health == 0){
+                monsterArray[i].live=false;
+                monsterArray[i].img = imgMonsterDeath;
+                setTimeout(function(){
+                  monsterArray.splice(i,1);
+                },300)
+                plusScore(monsterArray[i].score);
+                plusBarProgress(monsterArray[i].barProgress);
+              }
             }
         }
       }
@@ -533,17 +889,27 @@ function animation(){
     // monter hits player;
 
     for(let i = 0; i<monsterArray.length; i++){
-      if(((monsterArray[i].x < player.x+imgPlayerStatic.width-10 && monsterArray[i].x > player.x) || (monsterArray[i].x+imgMonster.width > player.x && monsterArray[i].x+imgMonster.width <player.x + imgPlayerStatic.width-10)) && ((monsterArray[i].y < player.y+imgPlayerStatic.height && monsterArray[i].y > player.y) || (monsterArray[i].y+imgMonster.height > player.y && monsterArray[i].y+imgMonster.width < player.y + imgPlayerStatic.height))){
-        monsterArray.splice(i,1);
+      if(((monsterArray[i].x < player.x+imgPlayerStatic.width-20 && monsterArray[i].x > player.x) || (monsterArray[i].x+monsterArray[i].img.frame > player.x && monsterArray[i].x+monsterArray[i].img.frame <player.x + imgPlayerStatic.width-20)) && ((monsterArray[i].y < player.y+imgPlayerStatic.height-10 && monsterArray[i].y > player.y+10) || (monsterArray[i].y+monsterArray[i].img.height-10 > player.y+10 && monsterArray[i].y+monsterArray[i].img.height-10 < player.y + imgPlayerStatic.height-10))){
         player.x = 200;
         player.y = 200;
-        minusLive();
+        minusLive(monsterArray[i].damage);
+        monsterArray.splice(i,1);
       }
     }
 
+    // monster shoot player;
+    for(let i = 0; i<monsterShootArray.length; i++){
+      if(((monsterShootArray[i].x < player.x+imgPlayerStatic.width-5 && monsterShootArray[i].x > player.x) || (monsterShootArray[i].x+monsterShootArray[i].img.frame > player.x && monsterShootArray[i].x+monsterShootArray[i].img.frame <player.x + imgPlayerStatic.width-5)) && ((monsterShootArray[i].y < player.y+imgPlayerStatic.height-5 && monsterShootArray[i].y > player.y+5) || (monsterShootArray[i].y+monsterShootArray[i].img.height > player.y+10 && monsterShootArray[i].y+monsterShootArray[i].img.height < player.y + imgPlayerStatic.height-10))){
+        player.x = 200;
+        player.y = 200;
+        minusLive(monsterShootArray[i].damage);
+        monsterShootArray.splice(i,1);
+      }
+    }
 
   }
   else{
+    clearInterval(monstersGo);
     $('.gameIntarface').toggleClass('hide');
   }
 }

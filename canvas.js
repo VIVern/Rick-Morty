@@ -13,7 +13,14 @@ bar.width = 200;
 bar.height = 20;
 
 
+
+
+
+
 //----------------------- Intarface style-----------------------//
+
+
+
 
 var fieldMarginTop = window.innerHeight/2 - canvas.height/2;
 var fieldMarginLeft = window.innerWidth/2 - canvas.width/2;
@@ -56,7 +63,15 @@ $('.gameIntarface').css({
   'margin-left' : fieldMarginLeft
 });
 
+
+
+
+
 //------------- Used images -------------------------------//
+
+
+
+
 
 
 //Players
@@ -145,7 +160,15 @@ imgHelp.src = "images/help.png";
 imgHelp.width = 200;
 imgHelp.height = 123;
 
+
+
+
+
 //-------------- Variables --------------------------------//
+
+
+
+
 
 var keyboard = {
   down: false,
@@ -160,6 +183,7 @@ var gameState = {
 }
 
 var waves = {
+  tick : 0,
   wave1 : true,
   wave2: false,
   wave3: false,
@@ -461,8 +485,8 @@ function MonsterExplosion(img,x,y,dx,dy,scoreValue,barValue,health,damage) {
   this.explosion = function(){
     if(this.live==false && this.boom == true){
       monsterShootArray.push(new MonsterShoot(imgMonsterShot,this.x,this.y,3,0,1));
-      monsterShootArray.push(new MonsterShoot(imgMonsterShot20,this.x,this.y,3,1,1));
-      monsterShootArray.push(new MonsterShoot(imgMonsterShot20m,this.x,this.y,3,-1,1));
+      //monsterShootArray.push(new MonsterShoot(imgMonsterShot20,this.x,this.y,3,1,1));
+      //monsterShootArray.push(new MonsterShoot(imgMonsterShot20m,this.x,this.y,3,-1,1));
       monsterShootArray.push(new MonsterShoot(imgMonsterShot30,this.x,this.y,3,2,1));
       monsterShootArray.push(new MonsterShoot(imgMonsterShot30m,this.x,this.y,3,-2,1));
       this.boom = false;
@@ -475,7 +499,16 @@ function MonsterExplosion(img,x,y,dx,dy,scoreValue,barValue,health,damage) {
     this.draw();
   }
 }
+
+
+
+
+
 // -------------------- Keyboard events------------------//
+
+
+
+
 
 window.addEventListener('keydown', function(event){
   // go up
@@ -546,7 +579,15 @@ window.addEventListener('keypress',function(event){
 });
 
 
+
+
+
+
 //----------------------Intarface events ---------------//
+
+
+
+
 
 $('.continue span').on('click', function(){
   gameState.pause =false;
@@ -601,7 +642,16 @@ $('.start span').on('click', function(){
 
 
 
+
+
+
+
 //-------------- Utility Functions ---------------------//
+
+
+
+
+
 
 function randomNumber(min, max) {
     var rand = min - 0.5 + Math.random() * (max - min + 1)
@@ -621,6 +671,14 @@ function reset(){
   goPortalSpeed = 0;
   apearSpeed = 0;
   clearInterval(monstersGo);
+  waves = {
+    tick : 0,
+    wave1 : true,
+    wave2: false,
+    wave3: false,
+    wave4: false,
+    wave5: false
+  }
   gameState.newLevel = true;
   ctxBar.clearRect(0,0,bar.width,bar.height);
   fullLive();
@@ -705,68 +763,90 @@ function newLevel(){
     }
 }
 
-// GameLevels
+
+
+
+
+
+// ------------------------------------------------GameLevels
+
+
+
+
+
 
 function level1(){
-  let tick=0;
+  console.log(waves);
   if(waves.wave1 == true){
     monstersGo = setInterval(function(){
-      if(gameState.pause != true && gameState.newLevel != true && tick !=10){
+      if(gameState.pause != true && gameState.newLevel != true && waves.tick !=10){
+        console.log(gameState.pause);
+        console.log(gameState.newLevel);
+        console.log(waves.tick);
         monsterArray.push(new MonsterSimple(imgMonster,canvas.width,randomNumber(0,(canvas.height-imgMonster.height)),1,0,15,1,2,1));
-      } else{
+      } else if(gameState.pause != true){
         waves.wave1 = false;
         waves.wave2 =true;
-        tick=0;
+        waves.tick=0;
         clearInterval(monstersGo);
         level1();
       }
-      tick+=1;
+      if(gameState.pause != true){
+        waves.tick+=1;
+      }
     },2000);
   }
   if(waves.wave2 == true){
     monstersGo = setInterval(function(){
-      if(gameState.pause != true && gameState.newLevel != true && tick !=15){
+      if(gameState.pause != true && gameState.newLevel != true && waves.tick !=15){
         monsterArray.push(new MonsterSimpleSpeed(imgMonster,canvas.width,randomNumber(0,(canvas.height-imgMonster.height)),3,0,15,1,1,2));
-      } else{
+      } else if(gameState.pause != true){
         waves.wave2 = false;
         waves.wave3 =true;
-        tick=0;
+        waves.tick=0;
         clearInterval(monstersGo);
         level1();
       }
-      tick+=1;
+      if(gameState.pause != true){
+        waves.tick+=1;
+      }
     },1000);
   }
   if(waves.wave3 == true){
     monstersGo = setInterval(function(){
-      if(gameState.pause != true && gameState.newLevel != true && tick !=15){
+      if(gameState.pause != true && gameState.newLevel != true && waves.tick !=15){
         monsterArray.push(new MonsterShooter(imgMonster,canvas.width,randomNumber(0,(canvas.height-imgMonster.height)),2,0,15,1,1,1));
-      } else{
+      } else if(gameState.pause != true){
         waves.wave3 = false;
         waves.wave4 =true;
-        tick=0;
+        waves.tick=0;
         clearInterval(monstersGo);
         level1();
       }
-      tick+=1;
+      if(gameState.pause != true){
+        waves.tick+=1;
+      }
     },2000);
   }
   if(waves.wave4 == true){
     monstersGo = setInterval(function(){
-      if(gameState.pause != true && gameState.newLevel != true && tick !=30){
+      if(gameState.pause != true && gameState.newLevel != true && waves.tick !=30){
         monsterArray.push(new MonsterExplosion(imgMonster,canvas.width,randomNumber(0,(canvas.height-imgMonster.height)),2,0,15,1,1,1));
-      } else{
+      } else if(gameState.pause != true){
         waves.wave4 = false;
         waves.wave5 =true;
-        tick=0;
+        waves.tick=0;
         clearInterval(monstersGo);
+        level1();
       }
-      tick+=1;
+      if(gameState.pause != true){
+        waves.tick+=1;
+      }
     },1000);
   }
   if(waves.wave5 == true){
     monstersGo = setInterval(function(){
-      if(gameState.pause != true && gameState.newLevel != true && tick !=30){
+      if(gameState.pause != true && gameState.newLevel != true && waves.tick !=30){
         let r = randomNumber(1,12);
         if(r<=3){
           monsterArray.push(new MonsterSimple(imgMonster,canvas.width,randomNumber(0,(canvas.height-imgMonster.height)),1,0,15,1,2,1));
@@ -780,16 +860,21 @@ function level1(){
         if(r>9 && r<=12){
           monsterArray.push(new MonsterExplosion(imgMonster,canvas.width,randomNumber(0,(canvas.height-imgMonster.height)),2,0,15,1,1,1));
         }
-      } else{
+      } else if(gameState.pause != true){
         waves.wave5 = false;
         tick=0;
         clearInterval(monstersGo);
         level1();
       }
-      tick+=1;
+      if(gameState.pause != true){
+        waves.tick+=1;
+      }
     },1000);
   }
 }
+
+
+
 
 //------------------Animation--------------------------//
 

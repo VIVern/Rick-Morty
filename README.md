@@ -15,7 +15,7 @@ Later this game will be posted on hosting. Now you can clonee this repository an
 Made by using canvas+js (no libs). There is no a lot animation effecs, because do not have much special sprites with this theme. Game still in progress.
 
 ## Versions
-0.2.1
+0.6.1
 
 ## Author
 Made by simple guy VIVern.

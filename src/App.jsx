@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
+import MainMenu from './components/MainMenu/MainMenu.jsx'
 import  './App.css';
-import png from './images/bodyFon.jpg';
 
 class App extends Component {
   render() {
     return (
-        <div id="app"></div>
+        <div id="app">
+          <MainMenu/>
+        </div>
     );
   }
 }

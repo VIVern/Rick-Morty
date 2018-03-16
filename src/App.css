@@ -1,3 +1,8 @@
+@font-face {
+  font-family: 'RandM';
+  src: url('../../font/dikovina.otf');
+}
+
 * {
   cursor: url('./images/cursor.png'), default;
 }
@@ -9,4 +14,16 @@ body {
   font-family: "RandM";
   color: #fff;
   text-shadow: 2px 2px 6px #00b1c1, -2px -2px 6px #00b1c1, -2px 2px 6px #00b1c1, 2px -2px 6px #00b1c1;
+}
+
+
+#app {
+  position: absolute;
+  width: 1400px;
+  height : 620px;
+  background: #000;
+  top: 50%;
+  left: 50%;
+  margin-top: -310px;
+  margin-left: -700px;
 }

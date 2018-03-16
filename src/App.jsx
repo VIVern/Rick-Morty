@@ -5,7 +5,7 @@ import png from './images/bodyFon.jpg';
 class App extends Component {
   render() {
     return (
-        <h1>Hello React</h1>
+        <div id="app"></div>
     );
   }
 }

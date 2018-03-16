@@ -309,6 +309,7 @@ var imgPlayerShoot;
 var shootArray;
 var monsterArray;
 var monsterShootArray;
+var monsterDeathArray;
 var monstersGo;
 var portal;
 var goPortalSpeed=0;
@@ -955,6 +956,7 @@ function reset(){
   shootArray =[];
   monsterShootArray =[];
   monsterArray = [];
+  monsterDeathArray=[];
   goPortalSpeed = 0;
   apearSpeed = 0;
   clearInterval(monstersGo);
@@ -1239,6 +1241,7 @@ function animation(){
     for( let i=0; i<monsterArray.length; i++){
       if(monsterArray[i].x < 0){
         minusLive(monsterArray[i].damage);
+        plusBarProgress(monsterArray[i].barProgress);
         monsterArray.splice(i,1);
       }
       monsterArray[i].update();
@@ -1281,6 +1284,7 @@ function animation(){
         player.x = 200;
         player.y = 200;
         minusLive(monsterArray[i].damage);
+        plusBarProgress(monsterArray[i].barProgress);
         monsterArray.splice(i,1);
       }
     }

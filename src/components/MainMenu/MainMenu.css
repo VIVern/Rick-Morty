@@ -1,4 +1,4 @@
-.startMenu{
+.MainMenu{
   background: url('../../images/bodyFon.jpg');
   border: 3px solid black;
   z-index: 2;
@@ -6,7 +6,7 @@
   height: inherit;
 }
 
-.startMenuBg {
+.MainMenuBg {
   position: absolute;
   width: inherit;
   height: inherit;

@@ -1,0 +1,29 @@
+.player {
+  position: absolute;
+}
+
+.player:hover {
+  cursor: url('../../images/cursor-pointer.png'), pointer;
+}
+
+.rick{
+bottom: 100px;
+left: 150px;
+}
+
+.rickSelected{
+  position: absolute;
+  bottom: 85px;
+  left: 215px;
+}
+
+.morty {
+  bottom: 100px;
+  right:230px;
+}
+
+.mortySelected {
+  position: absolute;
+  bottom: 85px;
+  right: 265px;
+}

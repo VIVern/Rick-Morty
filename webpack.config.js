@@ -49,10 +49,10 @@ module.exports = {
       },
 
       {
-        test : /\.(ttf|woff|woff2|eot)$/,
+        test : /\.(ttf|woff|woff2|eot|otf)$/,
         use: [
           {
-            loader: 'file-loader',
+            loader: 'url-loader',
             options: {
               name : '[name].[ext]',
               outputPath : 'fonts/',

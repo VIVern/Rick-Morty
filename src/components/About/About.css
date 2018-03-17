@@ -1,0 +1,22 @@
+#about {
+  text-align: center;
+  font-size: 18px;
+}
+
+#about p {
+  text-shadow: 2px 2px 6px #4eb236, -2px -2px 6px #4eb236, -2px 2px 6px #4eb236, 2px -2px 6px #4eb236;
+}
+
+#about .goBack {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  font-size: 20px;
+  margin-bottom: 25px;
+  margin-left: -83px;
+}
+
+#about .goBack:hover {
+  cursor: url('../../images/cursor-pointer.png'), pointer;
+  text-shadow: 2px 2px 6px #4eb236, -2px -2px 6px #4eb236, -2px 2px 6px #4eb236, 2px -2px 6px #4eb236;
+}

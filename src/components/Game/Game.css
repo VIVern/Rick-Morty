@@ -1,0 +1,13 @@
+#game{
+  border: 3px solid black;
+  background: url('../../images/bg2.jpg') no-repeat;
+  background-size: cover;
+  cursor: none;
+  position: absolute;
+  width: 1400px;
+  height : 620px;
+  top: 50%;
+  left: 50%;
+  margin-top: -310px;
+  margin-left: -700px;
+}

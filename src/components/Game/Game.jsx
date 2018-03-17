@@ -1,10 +1,11 @@
 import React, {Component} from 'react';
-import './Game.css'
+import './Game.css';
+import './Game.js';
 
 class Game extends Component {
   render(){
     return(
-      <canvas></canvas>
+      <canvas id="game"></canvas>
     )
   }
 }

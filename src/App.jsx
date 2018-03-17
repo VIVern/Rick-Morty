@@ -44,9 +44,7 @@ class App extends Component {
     }
     if(this.state.start) {
       return (
-        <div id="app">
           <Game />
-        </div>
       );
     }
   }

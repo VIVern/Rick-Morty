@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import MainMenu from './components/MainMenu/MainMenu.jsx';
 import About from './components/About/About.jsx';
+import Game from './components/Game/Game.jsx';
 import  './App.css';
 
 
@@ -13,7 +14,12 @@ class App extends Component {
 
   about = event => {
     event.preventDefault();
-    this.setState({menu: !this.state.menu, about: !this.state.about});
+    this.setState({menu: false, about: true});
+  }
+
+  start = event => {
+    event.preventDefault();
+    this.setState({menu: false, start: true});
   }
 
   goBack = event => {
@@ -24,16 +30,23 @@ class App extends Component {
   render() {
     if(this.state.menu){
       return (
-          <div id="app">
-             <MainMenu onClick={this.about}/>
-          </div>
+        <div id="app">
+          <MainMenu onAbout={this.about} onStart={this.start}/>
+        </div>
       );
     }
     if(this.state.about) {
       return (
-          <div id="app">
-             <About onClick={this.goBack}/>
-          </div>
+        <div id="app">
+          <About onGoBack={this.goBack}/>
+        </div>
+      );
+    }
+    if(this.state.start) {
+      return (
+        <div id="app">
+          <Game />
+        </div>
       );
     }
   }

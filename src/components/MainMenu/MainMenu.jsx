@@ -17,10 +17,10 @@ class MainMenu extends Component {
       <div className="MainMenu">
         <div className="MainMenuBg">
           <PlayerPicker onPick={this.pick} chosen={this.state.chosen}/>
-          <div className="start"><span>Start Game</span></div>
+          <div className="start" onClick={this.props.onStart}><span>Start Game</span></div>
           <div className="bestScore"><span>Best Score</span></div>
           <div className="options"><span>Options</span></div>
-          <div className="about" onClick={this.props.onClick}><span>About</span></div>
+          <div className="about" onClick={this.props.onAbout}><span>About</span></div>
         </div>
       </div>
     )

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Canvas</title>
+
+  <link rel="stylesheet" href="css/main.css">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="js/plugin-preloader.js"></script>
+  <script src="js/preloader-custom.js"></script>
+</head>
+<body>
+
+  <div id="preloader">
+    <p class="preloader-text">Rick and Morty</p>
+    <div class="preloader-logo"><img src="images/preloaderLogo2.png" alt=""></div>
+  	<div class="dws-progress-bar"></div>
+  </div>
+
+<!-- All img we load -->
+  <div class="loadedImages">
+    <img src="images/bg.jpg" alt="">
+    <img src="images/cursor.png" alt="">
+    <img src="images/cursor-pointer.png" alt="">
+    <img src="images/live.png" alt="">
+    <img src="images/noLive.png" alt="">
+    <img src="images/monster1.png" alt="">
+    <img src="images/playerRickShoot.png" alt="">
+    <img src="images/playerRickStatic.png" alt="">
+    <img src="images/playerMortyStatic.png" alt="">
+    <img src="images/playerMortyShoot.png" alt="">
+    <img src="images/shoot.png" alt="">
+    <img src="images/bodyFon.jpg" alt="">
+    <img src="images/barSmall.png" alt="">
+    <img src="images/portal.png" alt="">
+    <img src="images/morty.png" alt="">
+    <img src="images/mortySelected.png" alt="">
+    <img src="images/rick.png" alt="">
+    <img src="images/rickSelected.png" alt="">
+  </div>
+<!-------------------------------->
+
+<audio src="sound/Rick_and_Morty_Soundtrack.mp" autoplay loop class="mainSound"></audio>
+<audio src="sound/Sound_16482.mp" class="shootSound"></audio>
+
+  <div class="startMenu hideLoad">
+    <div class="startMenuBg">
+      <img src="images/rickSelected.png" alt="" data-rick class="player rick check">
+      <span class="rickSelected">Chosen</span>
+      <img src="images/morty.png" alt="" data-morty class="player morty">
+      <span class="mortySelected hide">Chosen</span>
+      <div class="start"><span>Start Game</span></div>
+      <div class="bestScore"><span>Best Score</span></div>
+      <div class="options"><span>Options</span></div>
+      <div class="about"><span>About</span></div>
+    </div>
+  </div>
+
+  <div class="gameIntarface hide">
+    <div class="continue"><span>Continue</span></div>
+    <div class="restart"><span>Restart</span></div>
+    <div class="exit"><span>Exit</sapn></div>
+  </div>
+
+  <div class="gameOver hide">
+    <div class="lost"><span>Game Over</span></div>
+    <div class="resultScore">Score: <span>0</span></div>
+    <div class="restart"><span>Restart</span></div>
+    <div class="exit"><span>Exit</sapn></div>
+  </div>
+
+
+  <span class="score hide">Score: <span>0</span></span>
+    <canvas class="bar hide"></canvas>
+  <ul class="lives hide">
+    <li data-live="true" class="hasLive"></li>
+    <li data-live="true" class="hasLive"></li>
+    <li data-live="true" class="hasLive"></li>
+    <li data-live="true" class="hasLive"></li>
+    <li data-live="true" class="hasLive"></li>
+  </ul>
+  <div class="gamefield">
+    <canvas class="game hideLoad"></canvas>
+  </div>
+
+  <script src="js/player-check.js"></script>
+  <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
+  <script src="canvas.js"></script>
+
+</body>
+</html>

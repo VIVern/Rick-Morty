@@ -913,14 +913,13 @@ export default function(props){
 
 
 
-  // $('.continue span').on('click', function(){
-  //   gameState.pause =false;
+
+
   //   $('.gameIntarface').toggleClass('hide');
   //   $('.lives').removeClass('hide');
   //   $('.score').removeClass('hide');
   //   $('.bar').removeClass('hide');
   //   animation();
-  // });
   //
   // $('.restart span').on('click', function(){
   //   reset();
@@ -1213,10 +1212,11 @@ export default function(props){
 
   function animation(){
     if(gameState.pause == true){
-      $('.gameIntarface').toggleClass('hide');
-      $('.lives').addClass('hide');
-      $('.score').addClass('hide');
-      $('.bar').addClass('hide');
+      document.querySelector('.continue span').addEventListener('click', function(){
+        console.log('unpaused');
+        gameState.pause =false;
+        animation();
+      })
       return;
     }
 

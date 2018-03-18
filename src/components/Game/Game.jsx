@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import './Game.css';
+import PauseMenu from '../PauseMenu/PauseMenu.jsx';
 import game  from './canvas.js';
 
 
@@ -7,16 +8,19 @@ import game  from './canvas.js';
 class Game extends Component {
 
   componentDidMount(){
+
     game(this.props);
-    this.props.pause();
+
   }
 
   render(){
     return(
-      <canvas id="game"></canvas>
+      <div id="app">
+        <canvas id="game"></canvas>
+        <PauseMenu onExit={this.props.onExit} chosen={this.props.chosen} />
+      </div>
     )
   }
-
 }
 
 export default Game;

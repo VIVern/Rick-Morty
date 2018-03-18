@@ -7,20 +7,12 @@ import  './App.css';
 
 class App extends Component {
   state = {
-    pause : false,
     menu : true,
     about : false,
     start : false,
     chosen : "rick"
   }
 
-  pause = () => {
-    window.addEventListener('keydown', (event)=>{
-      if(event.keyCode == 27) {
-        this.setState({pause : true})
-      }
-    });
-  }
 
   about = event => {
     event.preventDefault();
@@ -42,6 +34,11 @@ class App extends Component {
     this.setState(this.state.chosen=="rick" ? {chosen: "morty"} : {chosen: "rick"})
   };
 
+  exit = event => {
+    event.preventDefault();
+    this.setState({menu:true,start:false});
+  }
+
   render() {
     if(this.state.menu){
       return (
@@ -59,7 +56,7 @@ class App extends Component {
     }
     if(this.state.start) {
       return (
-          <Game chosen={this.state.chosen} pause={this.pause}/>
+        <Game chosen={this.state.chosen} onExit={this.exit}/>
       );
     }
   }

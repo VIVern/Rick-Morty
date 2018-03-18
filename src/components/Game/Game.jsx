@@ -8,6 +8,7 @@ class Game extends Component {
 
   componentDidMount(){
     game(this.props);
+    this.props.pause();
   }
 
   render(){

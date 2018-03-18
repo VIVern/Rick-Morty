@@ -7,10 +7,19 @@ import  './App.css';
 
 class App extends Component {
   state = {
+    pause : false,
     menu : true,
     about : false,
     start : false,
     chosen : "rick"
+  }
+
+  pause = () => {
+    window.addEventListener('keydown', (event)=>{
+      if(event.keyCode == 27) {
+        this.setState({pause : true})
+      }
+    });
   }
 
   about = event => {
@@ -50,7 +59,7 @@ class App extends Component {
     }
     if(this.state.start) {
       return (
-          <Game chosen={this.state.chosen}/>
+          <Game chosen={this.state.chosen} pause={this.pause}/>
       );
     }
   }

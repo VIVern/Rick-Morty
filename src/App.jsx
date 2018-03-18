@@ -9,7 +9,8 @@ class App extends Component {
   state = {
     menu : true,
     about : false,
-    start : false
+    start : false,
+    chosen : "rick"
   }
 
   about = event => {
@@ -27,11 +28,16 @@ class App extends Component {
     this.setState({menu: true, about: false});
   }
 
+  pick = event => {
+    event.preventDefault();
+    this.setState(this.state.chosen=="rick" ? {chosen: "morty"} : {chosen: "rick"})
+  };
+
   render() {
     if(this.state.menu){
       return (
         <div id="app">
-          <MainMenu onAbout={this.about} onStart={this.start}/>
+          <MainMenu onAbout={this.about} onStart={this.start} onPick={this.pick} chosen={this.state.chosen}/>
         </div>
       );
     }
@@ -44,7 +50,7 @@ class App extends Component {
     }
     if(this.state.start) {
       return (
-          <Game />
+          <Game chosen={this.state.chosen}/>
       );
     }
   }

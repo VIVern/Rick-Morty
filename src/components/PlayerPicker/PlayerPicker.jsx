@@ -8,7 +8,7 @@ import mortyUnchosen from '../../images/morty.png';
 
 class PlayerPicker extends Component {
   render(){
-    if(this.props.chosen == true){
+    if(this.props.chosen == "rick"){
       return (
         <div>
           <img src={rick} data-rick className="player rick check"/>
@@ -16,7 +16,7 @@ class PlayerPicker extends Component {
           <img src={mortyUnchosen} onClick={this.props.onPick} data-morty className="player morty"/>
         </div>
       )
-    } else {
+    } else if(this.props.chosen == "morty") {
       return (
         <div>
           <img src={rickUnchosen} alt="" onClick={this.props.onPick} data-rick className="player rick check"/>

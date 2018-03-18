@@ -4,10 +4,14 @@ const path = require('path');
 module.exports = {
   devtool:"source-map",
 
-  entry: './src/index.js',
+  entry: {
+    "app.bundle" : './src/index.js',
+    "app.game" : './src/components/Game/Game.js'
+  },
+  
   output: {
     path: path.join(__dirname,'dist'),
-    filename: 'app.bundle.js',
+    filename: '[name].js',
     publicPath : '/dist/'
   },
 

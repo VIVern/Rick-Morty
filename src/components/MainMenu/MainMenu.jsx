@@ -3,20 +3,11 @@ import './MainMenu.css';
 import PlayerPicker from '../PlayerPicker/PlayerPicker.jsx';
 
 class MainMenu extends Component {
-  state = {
-    chosen : true,
-  }
-
-  pick = event => {
-    event.preventDefault();
-    this.setState({chosen : !this.state.chosen})
-  };
-
   render() {
     return (
       <div className="MainMenu">
         <div className="MainMenuBg">
-          <PlayerPicker onPick={this.pick} chosen={this.state.chosen}/>
+          <PlayerPicker onPick={this.props.onPick} chosen={this.props.chosen}/>
           <div className="start" onClick={this.props.onStart}><span>Start Game</span></div>
           <div className="bestScore"><span>Best Score</span></div>
           <div className="options"><span>Options</span></div>

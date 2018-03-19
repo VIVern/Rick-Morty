@@ -1,0 +1,8 @@
+#bar {
+  position: absolute;
+  border: 1px solid black;
+  box-shadow: 4px 4px 6px #00b1c1, -4px -4px 6px #00b1c1, -4px 4px 6px #00b1c1, 4px -4px 6px #00b1c1;
+  top: -30px;
+  left: 50%;
+  margin-left: -100px;
+}

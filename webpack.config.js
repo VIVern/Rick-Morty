@@ -6,9 +6,8 @@ module.exports = {
 
   entry: {
     "app.bundle" : './src/index.js',
-    "app.game" : './src/components/Game/Game.js'
   },
-  
+
   output: {
     path: path.join(__dirname,'dist'),
     filename: '[name].js',

@@ -1,0 +1,21 @@
+#lives {
+  position: absolute;
+  list-style-type: none;
+  padding: 0;
+  right: 0px;
+  top: -50px;
+}
+
+#lives li {
+  height: 30px;
+  width: 25px;
+  display: inline-block;
+}
+
+.hasLive {
+  background: url('../../images/live.png') center no-repeat;
+}
+
+.noLive {
+  background: url('../../images/noLive.png') center no-repeat;
+}

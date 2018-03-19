@@ -5,11 +5,11 @@ import Portal from '../Portal.js';
 var apearSpeed = 0;
 var gameState = {
   pause: false,
-  newLevel : true
+  newLevel : true,
 }
 
 
-function newLevel(ctx,canvas,player,imgPlayerStatic,portal,imgPortal,monstersGo,monsterArray,monsterShootArray,waves){
+function newLevel(ctx,canvas,player,imgPlayerStatic,portal,imgPortal,monsterArray,monsterShootArray,waves){
   if(apearSpeed<=imgPlayerStatic.width){
     portal = new Portal(ctx,imgPortal,0,canvas.height/2-imgPortal.height/2);
     portal.draw();
@@ -23,8 +23,7 @@ function newLevel(ctx,canvas,player,imgPlayerStatic,portal,imgPortal,monstersGo,
   } else {
       gameState.newLevel = false;
       apearSpeed = 0;
-      level1(ctx,canvas,gameState,monstersGo,monsterArray,monsterShootArray,waves);
-      console.log('strted');
+      level1(ctx,canvas,gameState,monsterArray,monsterShootArray,waves);
     }
 }
 

@@ -177,10 +177,12 @@ imgMonsterShot330m.src = monsterShot330m;
 imgMonsterShot330m.width = 50;
 imgMonsterShot330m.height = 36;
 
+var monstersGo;
 
-function level1(ctx,canvas,gameState,monstersGo,monsterArray,monsterShootArray,waves){
+function level1(ctx,canvas,gameState,monsterArray,monsterShootArray,waves){
   if(waves.wave1 == true){
     monstersGo = setInterval(function(){
+      if(waves.portalOpen) clearInterval(monstersGo);
       if(gameState.pause != true && gameState.newLevel != true && waves.tick !=10){
         monsterArray.push(new MonsterSimple(ctx,imgMonsterSimple,imgMonsterSimpleHit,imgMonsterDeathShooter,canvas.width,randomNumber(0,(canvas.height-imgMonsterShooter.height)),1,0,1,50,2,1));
       } else if(gameState.pause != true){
@@ -189,7 +191,7 @@ function level1(ctx,canvas,gameState,monstersGo,monsterArray,monsterShootArray,w
         waves.tick=0;
         clearInterval(monstersGo);
         setTimeout(function(){
-          level1();
+          level1(ctx,canvas,gameState,monstersGo,monsterArray,monsterShootArray,waves)
         },5000);
       }
       if(gameState.pause != true){
@@ -199,6 +201,7 @@ function level1(ctx,canvas,gameState,monstersGo,monsterArray,monsterShootArray,w
   }
   if(waves.wave2 == true){
     monstersGo = setInterval(function(){
+      if(waves.portalOpen) clearInterval(monstersGo);
       if(gameState.pause != true && gameState.newLevel != true && waves.tick !=15){
         monsterArray.push(new MonsterSimpleSpeed(ctx,imgMonsterSimpleSpeed,imgMonsterSimpleHit,imgMonsterDeathShooter,canvas.width,randomNumber(0,(canvas.height-imgMonsterShooter.height)),3,0,5,2,1,2));
       } else if(gameState.pause != true){
@@ -207,7 +210,7 @@ function level1(ctx,canvas,gameState,monstersGo,monsterArray,monsterShootArray,w
         waves.tick=0;
         clearInterval(monstersGo);
         setTimeout(function(){
-          level1();
+          level1(ctx,canvas,gameState,monstersGo,monsterArray,monsterShootArray,waves)
         },5000);
       }
       if(gameState.pause != true){
@@ -217,6 +220,7 @@ function level1(ctx,canvas,gameState,monstersGo,monsterArray,monsterShootArray,w
   }
   if(waves.wave3 == true){
     monstersGo = setInterval(function(){
+      if(waves.portalOpen) clearInterval(monstersGo);
       if(gameState.pause != true && gameState.newLevel != true && waves.tick !=15){
         monsterArray.push(new MonsterShield(ctx,canvas,imgMonsterShield,imgMonsterShooter,imgMonsterShooterHit,imgBomb,canvas.width,randomNumber(0,(canvas.height-imgMonsterShooter.height)),2,0,10,2,2,1));
       } else if(gameState.pause != true){
@@ -225,7 +229,7 @@ function level1(ctx,canvas,gameState,monstersGo,monsterArray,monsterShootArray,w
         waves.tick=0;
         clearInterval(monstersGo);
         setTimeout(function(){
-          level1();
+          level1(ctx,canvas,gameState,monstersGo,monsterArray,monsterShootArray,waves)
         },5000);
       }
       if(gameState.pause != true){
@@ -235,6 +239,7 @@ function level1(ctx,canvas,gameState,monstersGo,monsterArray,monsterShootArray,w
   }
   if(waves.wave4 == true){
     monstersGo = setInterval(function(){
+      if(waves.portalOpen) clearInterval(monstersGo);
       if(gameState.pause != true && gameState.newLevel != true && waves.tick !=25){
           monsterArray.push(new MonsterShooter(ctx,monsterShootArray,imgMonsterShot2,imgMonsterShooter,undefined,imgMonsterDeathShooter,imgMonsterShooterShooting,canvas.width,randomNumber(0,(canvas.height-imgMonsterShooter.height)),1,0,10,50,1,1));
       } else if(gameState.pause != true){
@@ -243,7 +248,7 @@ function level1(ctx,canvas,gameState,monstersGo,monsterArray,monsterShootArray,w
         waves.tick=0;
         clearInterval(monstersGo);
         setTimeout(function(){
-          level1();
+          level1(ctx,canvas,gameState,monstersGo,monsterArray,monsterShootArray,waves)
         },5000);
       }
       if(gameState.pause != true){
@@ -253,6 +258,7 @@ function level1(ctx,canvas,gameState,monstersGo,monsterArray,monsterShootArray,w
   }
   if(waves.wave5 == true){
     monstersGo = setInterval(function(){
+      if(waves.portalOpen) clearInterval(monstersGo);
       if(gameState.pause != true && gameState.newLevel != true && waves.tick !=25){
           monsterArray.push(new MonsterExplosion(ctx,[imgMonsterShot3 ,imgMonsterShot330,imgMonsterShot330m],monsterShootArray,imgMonsterExplosion,imgMonsterExplosionHit,imgMonsterDeathShooter,canvas.width,randomNumber(0,(canvas.height-imgMonsterShooter.height)),2,0,20,2,2,1));
       } else if(gameState.pause != true){
@@ -260,7 +266,7 @@ function level1(ctx,canvas,gameState,monstersGo,monsterArray,monsterShootArray,w
         waves.tick=0;
         clearInterval(monstersGo);
         setTimeout(function(){
-          level1();
+          level1(ctx,canvas,gameState,monstersGo,monsterArray,monsterShootArray,waves)
         },5000);
       }
       if(gameState.pause != true){

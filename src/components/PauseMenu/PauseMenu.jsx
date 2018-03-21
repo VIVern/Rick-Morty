@@ -23,7 +23,7 @@ class PauseMenu extends Component{
 
   restart = event => {
     this.setState({pause:false});
-    game(this.props);
+    this.props.onRestart();
   }
 
   render(){

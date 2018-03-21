@@ -17,13 +17,13 @@ import fullLive from './js_modules/util_functions/fullLive.js';
 import plusScore from './js_modules/util_functions/plusScore.js';
 import fullBar from './js_modules/util_functions/fullBar.js';
 import plusBarProgress from './js_modules/util_functions/plusBarProgress.js';
-import nextLevel from './js_modules/util_functions/nextLevel.js';
+import {nextLevel} from './js_modules/util_functions/nextLevel.js';
 import {newLevel,apearSpeed, gameState} from './js_modules/util_functions/newLevel.js';
 import {gameOver} from './js_modules/util_functions/gameOver.js';
 
 
 
-export default function(props){
+export default function(props,level){
   //-------------------- Canvas config -----------------------//
 
 
@@ -92,7 +92,6 @@ export default function(props){
 
   //-------------- Variables --------------------------------//
 
-
   var keyboard = {
     down: false,
     up: false,
@@ -109,6 +108,15 @@ export default function(props){
     wave4: false,
     wave5: false
   }
+
+  var levels = {
+    level1: level.level1,
+    level2: level.level2,
+    level3: level.level3,
+    level4: level.level4,
+    level5: level.level5
+  }
+
 
   var player;
   var imgPlayerStatic;
@@ -220,7 +228,7 @@ export default function(props){
 
 
   function reset(){
-    player = new Player(keyboard,canvas,ctx,imgPlayerStatic,imgPlayerShoot,300,300,2,2,5,0,0);
+    player = new Player(keyboard,canvas,ctx,imgPlayerStatic,imgPlayerShoot,300,300,2,2,5,level.score,0);
     shootArray =[];
     monsterShootArray =[];
     monsterArray = [];
@@ -252,14 +260,16 @@ export default function(props){
       })
       return;
     }
-
+    if(goPortalSpeed == imgPlayerStatic.width+1) {
+      return;
+    }
     // Has live then game continues
     if(player.live >0){
       requestAnimationFrame(animation);
       ctx.clearRect(0,0, canvas.width, canvas.height);
 
       if(gameState.newLevel == true) {
-        newLevel(ctx,canvas,player,imgPlayerStatic,portal,imgPortal,monsterArray,monsterShootArray,waves);
+        newLevel(ctx,canvas,player,imgPlayerStatic,portal,imgPortal,monsterArray,monsterShootArray,waves,levels);
         ctx.drawImage(imgHelp,canvas.width/2-imgHelp.width/2,canvas.height-imgHelp.height);
         return;
       }
@@ -271,7 +281,7 @@ export default function(props){
         if((player.x < portal.x+imgPortal.width/10*6 && player.x >= portal.x) && (player.y+imgPlayerStatic.height > portal.y+imgPortal.height/4 && player.y<portal.y+imgPortal.height/5*4)){
           player.x = portal.x+imgPortal.width/2;
           player.y = portal.y+imgPortal.height/2-imgPlayerStatic.height/2;
-          nextLevel(ctx,goPortalSpeed,player,imgPlayerStatic);
+          nextLevel(ctx,goPortalSpeed,player,imgPlayerStatic,levels);
           goPortalSpeed++;
           return;
         }
@@ -365,6 +375,7 @@ export default function(props){
     }
     else{
       gameOver(player);
+      return;
     }
   }
 }

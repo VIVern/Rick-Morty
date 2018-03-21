@@ -3,9 +3,7 @@ import './Lives.css';
 
 class Lives extends Component {
 
-  componentDidUpdate(){
-    this.props.onGameOver();
-  }
+
   render(){
     return(
       <ul id="lives">

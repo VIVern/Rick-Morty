@@ -1,4 +1,9 @@
 import {level1} from '../Levels/level1.js';
+import {level2} from '../Levels/level2.js';
+import {level3} from '../Levels/level3.js';
+import {level4} from '../Levels/level4.js';
+import {level5} from '../Levels/level5.js';
+
 import Portal from '../Portal.js';
 
 
@@ -9,7 +14,8 @@ var gameState = {
 }
 
 
-function newLevel(ctx,canvas,player,imgPlayerStatic,portal,imgPortal,monsterArray,monsterShootArray,waves){
+function newLevel(ctx,canvas,player,imgPlayerStatic,portal,imgPortal,monsterArray,monsterShootArray,waves,levels){
+
   if(apearSpeed<=imgPlayerStatic.width){
     portal = new Portal(ctx,imgPortal,0,canvas.height/2-imgPortal.height/2);
     portal.draw();
@@ -23,7 +29,21 @@ function newLevel(ctx,canvas,player,imgPlayerStatic,portal,imgPortal,monsterArra
   } else {
       gameState.newLevel = false;
       apearSpeed = 0;
-      level1(ctx,canvas,gameState,monsterArray,monsterShootArray,waves);
+      if(levels.level1 == true){
+        level1(ctx,canvas,gameState,monsterArray,monsterShootArray,waves);
+      }
+      if(levels.level2 == true){
+        level2(ctx,canvas,gameState,monsterArray,monsterShootArray,waves);
+      }
+      if(levels.level3 == true){
+        level3(ctx,canvas,gameState,monsterArray,monsterShootArray,waves);
+      }
+      if(levels.level4 == true){
+        level4(ctx,canvas,gameState,monsterArray,monsterShootArray,waves);
+      }
+      if(levels.level5 == true){
+        level5(ctx,canvas,gameState,monsterArray,monsterShootArray,waves);
+      }
     }
 }
 

@@ -56,7 +56,7 @@ class App extends Component {
     }
     if(this.state.start) {
       return (
-        <Game chosen={this.state.chosen} onExit={this.exit}/>
+        <Game chosen={this.state.chosen} onExit={this.exit} />
       );
     }
   }

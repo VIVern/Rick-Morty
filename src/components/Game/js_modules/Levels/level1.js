@@ -184,7 +184,7 @@ function level1(ctx,canvas,gameState,monsterArray,monsterShootArray,waves){
     monstersGo = setInterval(function(){
       if(waves.portalOpen) clearInterval(monstersGo);
       if(gameState.pause != true && gameState.newLevel != true && waves.tick !=10){
-        monsterArray.push(new MonsterSimple(ctx,imgMonsterSimple,imgMonsterSimpleHit,imgMonsterDeathShooter,canvas.width,randomNumber(0,(canvas.height-imgMonsterShooter.height)),1,0,1,50,2,1));
+        monsterArray.push(new MonsterSimple(ctx,imgMonsterSimple,imgMonsterSimpleHit,imgMonsterDeathShooter,canvas.width,randomNumber(0,(canvas.height-imgMonsterShooter.height)),1,0,1,50,2,5));
       } else if(gameState.pause != true){
         waves.wave1 = false;
         waves.wave2 =true;

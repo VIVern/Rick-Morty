@@ -24,7 +24,6 @@ class PauseMenu extends Component{
   restart = event => {
     this.setState({pause:false});
     game(this.props);
-    console.log('click');
   }
 
   render(){

@@ -1,0 +1,52 @@
+#gameOver {
+  position: absolute;
+  background: rgba(0,0,0, .85);
+  border: 3px solid black;
+  z-index: 2;
+  width: inherit;
+  height: inherit;
+}
+
+#gameOver .lost {
+  margin: 0 auto;
+  margin-top: 150px;
+  text-align: center;
+  font-size: 54px;
+  color: #fff;
+  text-shadow: 2px 2px 6px #4eb236, -2px -2px 6px #4eb236, -2px 2px 6px #4eb236, 2px -2px 6px #4eb236;
+}
+
+#gameOver .restart {
+  margin: 0 auto;
+  margin-top: 100px;
+  text-align: center;
+  font-size: 26px;
+  color: #fff
+}
+
+#gameOver .exit {
+  text-align: center;
+  margin: 0 auto;
+  margin-top: 50px;
+  text-align: center;
+  font-size: 26px;
+  color: #fff
+}
+
+#gameOver .resultScore {
+  text-align: center;
+  margin: 0 auto;
+  margin-top: 50px;
+  text-align: center;
+  font-size: 32px;
+  color: #fff
+}
+
+#gameOver .resultScore span {
+  text-shadow: 2px 2px 6px #4eb236, -2px -2px 6px #4eb236, -2px 2px 6px #4eb236, 2px -2px 6px #4eb236;
+}
+
+#gameOver .exit span:hover, #gameOver .restart span:hover{
+  cursor: url('../../images/cursor-pointer.png'), pointer;
+  text-shadow: 2px 2px 6px #4eb236, -2px -2px 6px #4eb236, -2px 2px 6px #4eb236, 2px -2px 6px #4eb236;
+}

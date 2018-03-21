@@ -3,7 +3,6 @@ import mortyShoot from '../../images/playerMortyShoot.png';
 import rick from '../../images/playerRickStatic.png';
 import rickShoot from '../../images/playerRickShoot.png';
 import shot from '../../images/shoot.png';
-
 import barBg from "../../images/barSmall.png";
 import greenPortal from "../../images/portal.png";
 import help from "../../images/help.png";
@@ -20,6 +19,7 @@ import fullBar from './js_modules/util_functions/fullBar.js';
 import plusBarProgress from './js_modules/util_functions/plusBarProgress.js';
 import nextLevel from './js_modules/util_functions/nextLevel.js';
 import {newLevel,apearSpeed, gameState} from './js_modules/util_functions/newLevel.js';
+import {gameOver} from './js_modules/util_functions/gameOver.js';
 
 
 
@@ -242,27 +242,7 @@ export default function(props){
   }
 
 
-  function gameOver(){
-    clearInterval(monstersGo);
-    $('.gameOver').toggleClass('hide');
-    let score =+$('.resultScore span').text();
-    $('.resultScore span').html(`0`);
-    let k = 0;
-    let countScore = setInterval(function(){
-      if(k>score) {
-          $('.resultScore span').html(`${score}`);
-          clearInterval(countScore);
-          return;
-      }
-      $('.resultScore span').html(`${k}`);
-      k+=50;
-    },20)
-  }
-
-
   //------------------Animation--------------------------//
-
-
 
   function animation(){
     if(gameState.pause == true){
@@ -384,7 +364,7 @@ export default function(props){
 
     }
     else{
-      gameOver();
+      gameOver(player);
     }
   }
 }

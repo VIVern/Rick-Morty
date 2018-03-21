@@ -4,7 +4,6 @@ import './Lives.css';
 class Lives extends Component {
 
   componentDidUpdate(){
-    console.log('minus');
     this.props.onGameOver();
   }
   render(){

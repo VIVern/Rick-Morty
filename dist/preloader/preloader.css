@@ -51,7 +51,7 @@
 }
 
 .css3.part {
-	background: #000;
+	background: url('../images/loader-bg.png');
 	background-size: cover;
 	height: 100%;
 	position: absolute;

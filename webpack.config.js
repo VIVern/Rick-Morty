@@ -6,6 +6,7 @@ module.exports = {
 
   entry: {
     "app.bundle" : './src/index.js',
+    "app.preloader" : './src/preloader.js'
   },
 
   output: {

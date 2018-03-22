@@ -30,6 +30,8 @@ function newLevel(ctx,canvas,player,imgPlayerStatic,portal,imgPortal,monsterArra
       gameState.newLevel = false;
       apearSpeed = 0;
       if(levels.level1 == true){
+        let bg = document.querySelector('#game');
+        bg.style.background = "url('../../images/bg.jpg') no-repeat";
         level1(ctx,canvas,gameState,monsterArray,monsterShootArray,waves);
       }
       if(levels.level2 == true){

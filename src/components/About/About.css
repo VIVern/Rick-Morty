@@ -1,6 +1,15 @@
 #about {
+  position: absolute;
   text-align: center;
   font-size: 18px;
+  background: url('../../images/boxBg.png');
+  background-size: cover;
+  width: inherit;
+  height: inherit;
+}
+
+#about h1 {
+  margin-top:50px;
 }
 
 #about p {

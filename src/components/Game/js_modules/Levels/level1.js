@@ -6,7 +6,6 @@ import MonsterShield from '../MonsterShield.js';
 
 import randomNumber from '../util_functions/randomNumber.js';
 
-
 import bomb from '../../../../images/bomb.png';
 import shot from '../../../../images/shoot.png';
 import monsterShot from '../../../../images/monsterShot.png';

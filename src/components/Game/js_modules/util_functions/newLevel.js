@@ -1,4 +1,4 @@
-import {level1} from '../Levels/level1.js';
+import {level1,bg1} from '../Levels/level1.js';
 import {level2} from '../Levels/level2.js';
 import {level3} from '../Levels/level3.js';
 import {level4} from '../Levels/level4.js';
@@ -15,7 +15,26 @@ var gameState = {
 
 
 function newLevel(ctx,canvas,player,imgPlayerStatic,portal,imgPortal,monsterArray,monsterShootArray,waves,levels){
-
+  if(levels.level1){
+    let bg = document.querySelector('#game');
+    bg.classList.add('level1');
+  }
+  if(levels.level2){
+    let bg = document.querySelector('#game');
+    bg.classList.add('level2');
+  }
+  if(levels.level3){
+    let bg = document.querySelector('#game');
+    bg.classList.add('level3');
+  }
+  if(levels.level4){
+    let bg = document.querySelector('#game');
+    bg.classList.add('level4');
+  }
+  if(levels.level5){
+    let bg = document.querySelector('#game');
+    bg.classList.add('level5');
+  }
   if(apearSpeed<=imgPlayerStatic.width){
     portal = new Portal(ctx,imgPortal,0,canvas.height/2-imgPortal.height/2);
     portal.draw();
@@ -30,8 +49,6 @@ function newLevel(ctx,canvas,player,imgPlayerStatic,portal,imgPortal,monsterArra
       gameState.newLevel = false;
       apearSpeed = 0;
       if(levels.level1 == true){
-        let bg = document.querySelector('#game');
-        bg.style.background = "url('../../images/bg.jpg') no-repeat";
         level1(ctx,canvas,gameState,monsterArray,monsterShootArray,waves);
       }
       if(levels.level2 == true){

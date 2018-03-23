@@ -17,23 +17,23 @@ var gameState = {
 function newLevel(ctx,canvas,player,imgPlayerStatic,portal,imgPortal,monsterArray,monsterShootArray,waves,levels){
   if(levels.level1){
     let bg = document.querySelector('#game');
-    bg.classList.add('level1');
+    bg.setAttribute('class','level1');
   }
   if(levels.level2){
     let bg = document.querySelector('#game');
-    bg.classList.add('level2');
+    bg.setAttribute('class','level2');
   }
   if(levels.level3){
     let bg = document.querySelector('#game');
-    bg.classList.add('level3');
+    bg.setAttribute('class','level3');
   }
   if(levels.level4){
     let bg = document.querySelector('#game');
-    bg.classList.add('level4');
+    bg.setAttribute('class','level4');
   }
   if(levels.level5){
     let bg = document.querySelector('#game');
-    bg.classList.add('level5');
+    bg.setAttribute('class','level5');
   }
   if(apearSpeed<=imgPlayerStatic.width){
     portal = new Portal(ctx,imgPortal,0,canvas.height/2-imgPortal.height/2);
